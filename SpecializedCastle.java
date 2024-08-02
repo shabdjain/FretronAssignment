@@ -47,61 +47,15 @@ public class SpecializedCastle {
         List<List<Position>> allPaths = new ArrayList<>();
         findAllPaths(board, start, start, new ArrayList<>(), allPaths);
 
-        // Print all paths
-        for (List<Position> path : allPaths) {
-            for (Position pos : path) {
-                System.out.print("(" + pos.row + ", " + pos.col + ") ");
-            }
-            System.out.println();
-        }
-
-        scanner.close();
-    }
+      
 
     private static void findAllPaths(char[][] board, Position current, Position start, List<Position> path, List<List<Position>> allPaths) {
         // Add current position to the path
         path.add(new Position(current.row, current.col));
-
-        // If we've returned to the start position and the path length is greater than 1, record the path
-        if (current.row == start.row && current.col == start.col && path.size() > 1) {
-            allPaths.add(new ArrayList<>(path));
-            path.remove(path.size() - 1);
-            return;
-        }
-
-        // Try to move in all possible directions
-        for (int i = 0; i < 2; i++) {
-            int newRow = current.row + ROW_MOVES[i];
-            int newCol = current.col;
-
-            // Check if the new position is within bounds and either empty or contains a soldier
-            if (isValid(board, newRow, newCol)) {
+    
                 // Temporarily mark the board
                 char temp = board[newRow][newCol];
                 board[newRow][newCol] = '.';
 
-                // Move to the left after killing a soldier
-                if (temp == 'S') {
-                    if (isValid(board, newRow, newCol - 1)) {
-                        board[newRow][newCol - 1] = '.';
-                        findAllPaths(board, new Position(newRow, newCol - 1), start, path, allPaths);
-                        board[newRow][newCol - 1] = 'S';
-                    }
-                } else {
-                    findAllPaths(board, new Position(newRow, newCol), start, path, allPaths);
-                }
-
-                // Unmark the board
-                board[newRow][newCol] = temp;
-            }
-        }
-
-        // Remove current position from the path before backtracking
-        path.remove(path.size() - 1);
-    }
-
-    private static boolean isValid(char[][] board, int row, int col) {
-        return row >= 0 && row < board.length && col >= 0 && col < board[0].length;
-    }
-}
+                
 
